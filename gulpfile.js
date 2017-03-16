@@ -26,7 +26,7 @@ gulp.task('scripts', function(done){
   gulp.src('./assets/*.js')
     .pipe(concat('virtual-lab.min.js'))
     .on('error', err => { console.log(err) })
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest('./public/js/'))
     .on('end', done);
 });

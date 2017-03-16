@@ -25,12 +25,13 @@ function create() {
 });
 
  tracking.ColorTracker.registerColor('red', function(r, g, b) {
-  if (b < 50 && r > 200 && g < 50) {
+
+  if (b < 150 && r > 200 && g < 150) {
     return true;
   }
   return false;
 });
-
+      var pastX = null;
       var tracker = new tracking.ColorTracker(['yellow', 'purple', 'cyan','red']);
       
       tracker.setMinDimension(5);
@@ -38,27 +39,61 @@ function create() {
 
       
       tracker.on('track', function(event) {
-        //context.clearRect(0, 0, canvas.width, canvas.height);
+        var yellowRects = {
+          x : Infinity,
+          y : Infinity
+        };
+
+        var blueRects = {
+          x : Infinity,
+          y : Infinity
+        };
+
+        var redRects = {
+          x : Infinity,
+          y : Infinity
+        };
+
+        var purpleRects = {
+          x : Infinity,
+          y : Infinity
+        };
+
         event.data.forEach(function(rect) {
-          if (rect.color === 'yellow' && circleYellow) {
-            circleYellow.x = rect.x;
-			circleYellow.y = rect.y;
+          if(rect.color === 'yellow'){
+            yellowRects.x = Math.min(yellowRects.x,rect.x);
+            yellowRects.y = Math.min(yellowRects.y,rect.y);
+
+          }
+          if(rect.color === 'red'){
+            redRects.x = Math.min(rect.x,redRects.x);
+            redRects.y = Math.min(rect.y,redRects.y);
+          }
+          if(rect.color === 'cyan'){
+            blueRects.x = Math.min(rect.x,blueRects.x);
+            blueRects.y = Math.min(rect.y,blueRects.y);
+
           }
 
-          if (rect.color === 'cyan' && circleBlue) {
-            circleBlue.x = rect.x;
-			circleBlue.y = rect.y;
-          }
 
-          if (rect.color === 'purple' && circlePurple) {
-            circlePurple.x = rect.x;
-			circlePurple.y = rect.y;
-          }
-
-          if (rect.color === 'red' && circleRed) {
-            circleRed.x = rect.x;
-			circleRed.y = rect.y;
-          }
-         
         });
+ 
+            if(yellowRects.x != Infinity){
+                  var newX = game.width-(yellowRects.x);
+                  circleYellow.x = newX;
+                  circleYellow.y = yellowRects.y ;
+            }
+
+            if(blueRects.x != Infinity){
+                  var newX = game.width-(blueRects.x);
+                  circleBlue.x = newX;
+                  circleBlue.y = blueRects.y;
+            }
+
+            if(redRects.x != Infinity){
+                var newX = game.width-(redRects.x);
+                circleRed.x = newX;
+                circleRed.y = redRects.y;
+            }
+          
       });
