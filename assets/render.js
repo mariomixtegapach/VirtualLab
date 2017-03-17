@@ -4,10 +4,9 @@ function render(){
 	
 	if(circleBlue.x != Infinity)
 	 game.debug.geom(circleBlue,'#33b3e8');
+
+	if(click != null){
+		game.debug.geom(click,  '#fdf814')
+	}
 	
-	if(circlePurple.x != Infinity)
-	 game.debug.geom(circlePurple,'#aa55a8');
-	
-	if(circleRed.x != Infinity)
-	 game.debug.geom(circleRed,'#ff0000');
-}	
+}
