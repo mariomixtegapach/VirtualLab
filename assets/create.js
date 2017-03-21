@@ -1,4 +1,12 @@
+var pre_elements = [];
+
 function create() {
+
+   var graphics = game.add.graphics(0, 0);
+
+   window.graphics = graphics;
+
+
 	 circleYellow = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
 	 circleBlue = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
              //   game.add.sprite(0,0,'background')
@@ -13,10 +21,42 @@ function create() {
      height: 334,
      ylim : 334 
    }  
+
+   game.world.sendToBack(leftPanel)
+
+   var xini = leftPanel.x;
+  var xend = leftPanel.x + leftPanel.width - 50;
+  var elementsPerRow = 5;
+
+  var widthElement = (xend -xini) / elementsPerRow;
+  var heightElement = 50;
+  var rows = Math.ceil(elementsItems.length / elementsPerRow);
+
+   for(var i = 0; i < rows; i++){
+    for(var j = 0; j < elementsPerRow; j++){
+      var tempEl = elementsItems[(i*elementsPerRow)+j];
+      var rect = new Phaser.Rectangle(
+        (j*widthElement),
+        (i*heightElement),
+        widthElement,
+        heightElement);
+      rect.color = tempEl ? tempEl.cpkHexColor :'000';
+      rect.inix = rect.x;
+      rect.iniy = rect.y;
+
+      var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: rect.width, align: "center"};
+
+      text = game.add.text(-50, -50, tempEl.symbol, style);
+      text.anchor.set(0.5);
+
+      pre_elements.push({rect:rect, name: text})
+    }
+
+  }
 }
 
       
-      var tracker = new tracking.ColorTracker(['yellow', 'magenta']);
+      var tracker = new tracking.ColorTracker(['yellow', 'cyan']);
       
       tracker.setMinDimension(5);
       tracking.track('#video', tracker, { camera: true });
@@ -37,11 +77,15 @@ function create() {
             if(rect.color === 'yellow'){
               yellowRects.x = Math.min(yellowRects.x,rect.x);
               yellowRects.y = Math.min(yellowRects.y,rect.y);
+              yellowRects.width = rect.width;
+              yellowRects.height = rect.height;
             }
             
-            if(rect.color === 'magenta'){
+            if(rect.color === 'cyan'){
               blueRects.x = Math.min(rect.x,blueRects.x);
               blueRects.y = Math.min(rect.y,blueRects.y);
+               blueRects.width = rect.width;
+              blueRects.height = rect.height;
             }
 
           });

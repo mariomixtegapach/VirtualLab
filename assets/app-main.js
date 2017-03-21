@@ -1,11 +1,14 @@
 /* - - -  -  - Variables globales - - - -  - - -*/
 var pointer = {
 	clicked : false,
+  pastClicked : false,
 	x : -1,
 	y : -1,
   width: 5,
   height : 5
 }
+
+
 
 var circleYellow, 
     circleBlue,
@@ -64,6 +67,16 @@ function collide(one, two){
   return false;
 }
 
+function getRandomColor(){
+  var color = '#';
+
+  for(var i = 0; i < 6; i++){
+    color += "abcdef0123456789"[Math.floor(Math.random() * 100) %16];
+  }
+
+  return color;
+
+}
 
 /* -  - - - - - Funciones globales - -- - - - - - -*/
 

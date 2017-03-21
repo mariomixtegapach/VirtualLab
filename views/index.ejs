@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Jueguito</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
     <video id="video" width="300" height="225" preload autoplay loop muted controls></video>
-
+    <script type="text/javascript">
+      var elementsItems = <%-JSON.stringify(elements) %>
+    </script>
     <script type="text/javascript" src="js/phaser.min.js"></script>
     <script type="text/javascript" src="js/tracking-min.js"></script>
     <script type="text/javascript" src="js/virtual-lab.min.js"></script>
