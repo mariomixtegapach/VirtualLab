@@ -1,40 +1,22 @@
-var circleYellow, circleBlue, circlePurple, circleRed, click, distance,tuboEnsaye;
-
 function create() {
 	 circleYellow = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
 	 circleBlue = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
-                game.add.sprite(0,0,'background')
-   tuboEnsaye = game.add.sprite(50, 50, 'ensaye-tube');
-   tuboEnsaye.anchor.set(0.5,0.5);
-   console.log(tuboEnsaye)  
+             //   game.add.sprite(0,0,'background')
+
+   game.stage.backgroundColor = "#4488AA";
+   leftPanel = game.add.sprite(-250, 0, 'left-panel');
+   leftPanel.masker = {
+     x  : 250,
+     y  : 246,
+     getX : function() { console.log("Getting x"); return 250 + leftPanel.x },
+     width : 100,
+     height: 334,
+     ylim : 334 
+   }  
 }
 
- tracking.ColorTracker.registerColor('purple', function(r, g, b) {
-        var dx = r - 120;
-        var dy = g - 60;
-        var dz = b - 210;
-        if ((b - g) >= 100 && (r - g) >= 60) {
-          return true;
-        }
-        return dx * dx + dy * dy + dz * dz < 3500;
-  });
-
- tracking.ColorTracker.registerColor('blue', function(r, g, b) {
-    if (r < 50 && b > 200 && g < 50) {
-      return true;
-    }
-    return false;
-  });
-
- tracking.ColorTracker.registerColor('red', function(r, g, b) {
-
-    if (b < 150 && r > 200 && g < 150) {
-      return true;
-    }
-    return false;
-  });
       
-      var tracker = new tracking.ColorTracker(['yellow', 'purple', 'cyan','red']);
+      var tracker = new tracking.ColorTracker(['yellow', 'magenta']);
       
       tracker.setMinDimension(5);
       tracking.track('#video', tracker, { camera: true });
@@ -55,14 +37,13 @@ function create() {
             if(rect.color === 'yellow'){
               yellowRects.x = Math.min(yellowRects.x,rect.x);
               yellowRects.y = Math.min(yellowRects.y,rect.y);
-
             }
             
-            if(rect.color === 'cyan'){
+            if(rect.color === 'magenta'){
               blueRects.x = Math.min(rect.x,blueRects.x);
               blueRects.y = Math.min(rect.y,blueRects.y);
-
             }
+
           });
    
           if(yellowRects.x != Infinity){
