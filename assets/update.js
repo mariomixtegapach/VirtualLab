@@ -1,6 +1,9 @@
 var threeshold = 50;
 var inix = 0;
 var newDistx  = 0
+var velocityy = 0;
+var velocityx = 0;
+
 
 function update() {
 
@@ -40,7 +43,7 @@ function update() {
 				if(collide(element.rect, pointer) && (pointer.firstClick || element.activeClicked) ){
 					element.activeClicked = true;
 					if(pointer.firstClick && !tubosEnMundo[element.item.symbol]){
-						createTubo(element.item.symbol, pointer.x, pointer.y);
+						createTubo(element.item.symbol, pointer.x, pointer.y, element.rect.color);
 						leftPanel.x = -250;
 					}
 					
@@ -55,8 +58,26 @@ function update() {
 				var tubo = tubosEnMundo[key];
 				if(collide(tubo.sprite, pointer) && (pointer.firstClick || tubo.activeClicked) ){
 					tubo.activeClicked = true;
-					tubo.sprite.x = pointer.x;
-					tubo.sprite.y = pointer.y;
+
+					if(tubo.sprite.x - pointer.x > 5){
+						tubo.sprite.body.moveLeft(20);
+					}
+
+					if(pointer.x - tubo.sprite.x > 5){
+						tubo.sprite.body.moveRight(20);	
+					}
+
+					if(pointer.y - tubo.sprite.y > 5){
+						tubo.sprite.body.moveDown(20);	
+					}
+
+					if(tubo.sprite.y - pointer.y > 5){
+						tubo.sprite.body.moveUp(20);
+					}
+
+
+					velocityx = Math.abs(tubo.sprite.x - pointer.x)/2;
+					velocityy = Math.abs(tubo.sprite.y - pointer.y)/2;
 				}
 				
 				 var tmpSprite = tubo.sprite;
@@ -83,5 +104,26 @@ function update() {
 			});
 	}
 
-	//console.log(collide(leftPanel, pointer));
+	var pastKey = null;
+	Object.keys(tubosEnMundo).forEach(function(key){
+		var tubo = tubosEnMundo[key];
+		var tmpSprite = tubo.sprite;
+		
+		function collide(elementa,elementb){
+			console.log(elementa.name + ' + '+ elementb.name)
+		}
+
+		if(pastKey){
+			var pastSprite =tubosEnMundo[pastKey].sprite;
+			game.physics.ninja.collide(tubo.sprite, pastSprite, collide, null, this);					
+		} else {
+			pastKey = key;
+		}
+
+		tmpSprite.textName.x = tmpSprite.x;
+		tmpSprite.textName.y = tmpSprite.y;
+
+	})
+
+	
 }

@@ -8,8 +8,6 @@ var pointer = {
   height : 5
 }
 
-
-
 var circleYellow, 
     circleBlue,
     circlePurple, 
@@ -29,10 +27,31 @@ var configDimensions = {
 
 /* -  - - - - - Funciones globales - -- - - - - - -*/
 
-function createTubo(sustName, x, y){
-  var tmpSprite = game.add.sprite(x, y, 'ensaye-tube');
-      tmpSprite.anchor.set(0.5,0.5);
+function getTextColor(hexColor){
 
+  if(typeof hexColor != 'string') hexColor = hexColor.toString();
+
+  var red = parseInt(hexColor.replace('#','').substring(0, 2).toString(), 16)
+  var green = parseInt(hexColor.replace('#','').substring(2, 4).toString(), 16)
+  var blue = parseInt(hexColor.replace('#','').substring(4, 6).toString(), 16)
+
+
+  var text = "#000000" 
+  if ((red*0.299 + green*0.587 + blue*0.114) > 186){
+     text = "#000000" 
+  } else {
+    text='#ffffff';
+  }
+
+  return text;
+}
+
+function createTubo(sustName, x, y, color){
+  var tmpSprite = game.add.sprite(x, y, 'element');
+     tmpSprite.anchor.set(0.5,0.5);
+      tmpSprite.name = sustName
+      tmpSprite.tint = +('0x'+color);
+      console.log(+('0x'+color), color)
    //TODO: Load color and properties
 
    tmpSprite.masker = { 
@@ -46,23 +65,40 @@ function createTubo(sustName, x, y){
     height : tmpSprite.height + 50
  }
 
-
-   sprite1 = game.add.sprite(tmpSprite.x, tmpSprite.y, 'balls');
-   sprite1.name = 'blockA';
-
-    
-   game.physics.ninja.enableAABB(sprite1);
-
-   game.physics.ninja.enableTile(sprite, sprite.frame);   
-
-
-   var tuboEnsaye = {
+  var tuboEnsaye = {
       sustName : sustName,
       sprite : tmpSprite,
       pastTouched : false,
       touched : false
    };
 
+
+   /*for(var i = 0; i < 10; i++){
+    var sprite1 = game.add.sprite(tmpSprite.x -  game.rnd.realInRange(5, 10), tmpSprite.y - 100, 'balls');
+        sprite1.scale.setTo(0.5, 0.5);
+
+        tuboEnsaye.sustances.push(sprite1);
+   }*/
+   
+
+   /*var middleWidth = (tmpSprite.width/2);
+   var middleHeight = (tmpSprite.height/2);
+
+   tmpSprite.customBounds = [
+     game.add.sprite(x - middleWidth +5, y - middleHeight , 'leftTube'),
+     game.add.sprite(x + middleWidth - 10, y - middleHeight, 'leftTube'),
+     game.add.sprite(x - middleWidth, y + middleHeight - 20, 'bottomTube')
+   ]*/
+    
+   
+
+   game.physics.ninja.enableAABB(tmpSprite);
+
+  var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: tmpSprite.width, align: "center", fill:getTextColor(color)};
+
+      tmpSprite.textName = game.add.text(x, y, sustName, style);
+      tmpSprite.textName.anchor.set(0.5);
+   
    tubosEnMundo[sustName] = tuboEnsaye;
 
    return tuboEnsaye;

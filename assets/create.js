@@ -1,5 +1,4 @@
 var pre_elements = [];
-var leftEmitter;
 function create() {
 
    var graphics = game.add.graphics(0, 0);
@@ -23,88 +22,96 @@ function create() {
      height: 334,
      ylim : 334 
    }  
+
    
+   
+   leftPanel.topMargin = 50;
 
    game.world.sendToBack(leftPanel)
 
    var xini = leftPanel.x;
-  var xend = leftPanel.x + leftPanel.width - 50;
-  var elementsPerRow = 6;
+   var xend = leftPanel.x + leftPanel.width - 50;
+   var elementsPerRow = 6;
 
-  var widthElement = (xend -xini) / elementsPerRow;
-  var heightElement = 50;
-  var rows = Math.ceil(elementsItems.length / elementsPerRow);
+   var widthElement = (xend -xini) / elementsPerRow;
+   var heightElement = 50;
+   var rows = Math.ceil(elementsItems.length / elementsPerRow);
 
    for(var i = 0; i < rows; i++){
     for(var j = 0; j < elementsPerRow; j++){
       var tempEl = elementsItems[(i*elementsPerRow)+j];
-      var rect = new Phaser.Rectangle(
-        (j*widthElement),
-        (i*heightElement),
-        widthElement,
-        heightElement);
-      rect.color = tempEl ? tempEl.cpkHexColor :'000';
-      rect.inix = rect.x;
-      rect.iniy = rect.y;
+      if(tempEl) {
+        var rect = new Phaser.Rectangle(
+          (j*widthElement) ,
+          (i*heightElement) + leftPanel.topMargin,
+          widthElement,
+          heightElement);
+        rect.color = tempEl ? tempEl.cpkHexColor :'000';
+        rect.inix = rect.x;
+        rect.iniy = rect.y;
 
-      var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: rect.width, align: "center"};
+        var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: rect.width, align: "center", fill:getTextColor(rect.color)};
 
-      text = game.add.text(-50, -50, tempEl.symbol, style);
-      text.anchor.set(0.5);
 
-      pre_elements.push({rect:rect, name: text, item: tempEl})
+
+        text = game.add.text(-50, -50, tempEl.symbol, style);
+        text.anchor.set(0.5);
+
+        pre_elements.push({rect:rect, name: text, item: tempEl})
+      }
     }
+   }
 
-  }
+   leftPanel.topPad    = game.add.sprite(0, 0, 'leftPanelPadTop');
+   leftPanel.bottomPad = game.add.sprite(0, 550, 'leftPanelPadBottom');
+
+    
 }
 
+var tracker = new tracking.ColorTracker(['yellow', 'cyan']);
+
+tracker.setMinDimension(5);
+tracking.track('#video', tracker, { camera: true });
+
+
+tracker.on('track', function(event) {
+    var yellowRects = {
+      x : Infinity,
+      y : Infinity
+    };
+
+    var blueRects = {
+      x : Infinity,
+      y : Infinity
+    };
+
+    event.data.forEach(function(rect) {
+      if(rect.color === 'yellow'){
+        yellowRects.x = Math.min(yellowRects.x,rect.x);
+        yellowRects.y = Math.min(yellowRects.y,rect.y);
+        yellowRects.width = rect.width;
+        yellowRects.height = rect.height;
+      }
       
+      if(rect.color === 'cyan'){
+        blueRects.x = Math.min(rect.x,blueRects.x);
+        blueRects.y = Math.min(rect.y,blueRects.y);
+         blueRects.width = rect.width;
+        blueRects.height = rect.height;
+      }
 
+    });
 
-      var tracker = new tracking.ColorTracker(['yellow', 'cyan']);
-      
-      tracker.setMinDimension(5);
-      tracking.track('#video', tracker, { camera: true });
+    if(yellowRects.x != Infinity){
+          var newX = (game.width-((yellowRects.x / configDimensions.camWidth) * game.width)) ;
+          circleYellow.x = newX;
+          circleYellow.y = (yellowRects.y / configDimensions.camHeight) * game.height;
+    }
 
-      
-      tracker.on('track', function(event) {
-          var yellowRects = {
-            x : Infinity,
-            y : Infinity
-          };
-
-          var blueRects = {
-            x : Infinity,
-            y : Infinity
-          };
-
-          event.data.forEach(function(rect) {
-            if(rect.color === 'yellow'){
-              yellowRects.x = Math.min(yellowRects.x,rect.x);
-              yellowRects.y = Math.min(yellowRects.y,rect.y);
-              yellowRects.width = rect.width;
-              yellowRects.height = rect.height;
-            }
-            
-            if(rect.color === 'cyan'){
-              blueRects.x = Math.min(rect.x,blueRects.x);
-              blueRects.y = Math.min(rect.y,blueRects.y);
-               blueRects.width = rect.width;
-              blueRects.height = rect.height;
-            }
-
-          });
-   
-          if(yellowRects.x != Infinity){
-                var newX = (game.width-((yellowRects.x / configDimensions.camWidth) * game.width)) ;
-                circleYellow.x = newX;
-                circleYellow.y = (yellowRects.y / configDimensions.camHeight) * game.height;
-          }
-
-          if(blueRects.x != Infinity){
-                var newX = (game.width-((blueRects.x / configDimensions.camWidth) * game.width));
-                circleBlue.x = newX;
-                circleBlue.y = (blueRects.y / configDimensions.camHeight)  * game.height;
-          }
-      });
+    if(blueRects.x != Infinity){
+          var newX = (game.width-((blueRects.x / configDimensions.camWidth) * game.width));
+          circleBlue.x = newX;
+          circleBlue.y = (blueRects.y / configDimensions.camHeight)  * game.height;
+    }
+});
 
