@@ -18,7 +18,7 @@ var circleYellow,
     distance,
     leftPanel;
 
-var tubosEnMundo = [];
+var tubosEnMundo = {};
 
 var configDimensions = {
 	camWidth : video.width,
@@ -35,6 +35,27 @@ function createTubo(sustName, x, y){
 
    //TODO: Load color and properties
 
+   tmpSprite.masker = { 
+    getX :function() {
+       return tmpSprite.x - 50;
+    },
+    getY : function(){
+      return tmpSprite.y - 50;
+    },
+    width: tmpSprite.width + 50,
+    height : tmpSprite.height + 50
+ }
+
+
+   sprite1 = game.add.sprite(tmpSprite.x, tmpSprite.y, 'balls');
+   sprite1.name = 'blockA';
+
+    
+   game.physics.ninja.enableAABB(sprite1);
+
+   game.physics.ninja.enableTile(sprite, sprite.frame);   
+
+
    var tuboEnsaye = {
       sustName : sustName,
       sprite : tmpSprite,
@@ -42,12 +63,12 @@ function createTubo(sustName, x, y){
       touched : false
    };
 
-   tubosEnMundo.push(tuboEnsaye);
+   tubosEnMundo[sustName] = tuboEnsaye;
 
    return tuboEnsaye;
 }
 
-function collide(one, two){
+function collidex(one, two){
   var oneMask = one.masker ? one.masker : {x : one.x, y : one.y, width : one.width, height: one.height};
   var twoMask = two.masker ? two.masker : {x : two.x, y : two.y,  width : two.width, height: two.height};
 
@@ -55,7 +76,7 @@ function collide(one, two){
   oneMask.x = oneMask.getX ? oneMask.getX() : oneMask.x;
   twoMask.x = twoMask.getX ? twoMask.getX() : twoMask.x;
 
-  console.log(oneMask.x,oneMask.width, twoMask.x, twoMask.width)
+  //console.log(oneMask.x,oneMask.width, twoMask.x, twoMask.width)
 
   if( (oneMask.x >= twoMask.x  && oneMask.x <= twoMask.x + twoMask.width) ||
       (oneMask.x + oneMask.width <= twoMask.x + twoMask.width  && oneMask.x + oneMask.width >= twoMask.x) ||
@@ -65,6 +86,30 @@ function collide(one, two){
   }
 
   return false;
+}
+
+function collidey(one, two){
+  var oneMask = one.masker ? one.masker : {x : one.x, y : one.y, width : one.width, height: one.height};
+  var twoMask = two.masker ? two.masker : {x : two.x, y : two.y,  width : two.width, height: two.height};
+
+
+  oneMask.y = oneMask.getY ? oneMask.getY() : oneMask.y;
+  twoMask.y = twoMask.getY ? twoMask.getY() : twoMask.y;
+
+  //console.log(oneMask.x,oneMask.width, twoMask.x, twoMask.width)
+
+  if( (oneMask.y >= twoMask.y  && oneMask.y <= twoMask.y + twoMask.height) ||
+      (oneMask.y + oneMask.height <= twoMask.y + twoMask.height  && oneMask.y + oneMask.height >= twoMask.y) ||
+      (twoMask.y >= oneMask.y  && twoMask.y <= oneMask.y + oneMask.height)
+    ){
+    return true;
+  }
+
+  return false;
+}
+
+function collide(one, two){
+  return collidey(one, two) && collidex(one, two);
 }
 
 function getRandomColor(){

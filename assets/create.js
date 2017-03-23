@@ -1,11 +1,13 @@
 var pre_elements = [];
-
+var leftEmitter;
 function create() {
 
    var graphics = game.add.graphics(0, 0);
 
    window.graphics = graphics;
 
+   game.physics.startSystem(Phaser.Physics.NINJA);
+   
 
 	 circleYellow = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
 	 circleBlue = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
@@ -16,17 +18,18 @@ function create() {
    leftPanel.masker = {
      x  : 250,
      y  : 246,
-     getX : function() { console.log("Getting x"); return 250 + leftPanel.x },
+     getX : function() { return 250 + leftPanel.x },
      width : 100,
      height: 334,
      ylim : 334 
    }  
+   
 
    game.world.sendToBack(leftPanel)
 
    var xini = leftPanel.x;
   var xend = leftPanel.x + leftPanel.width - 50;
-  var elementsPerRow = 5;
+  var elementsPerRow = 6;
 
   var widthElement = (xend -xini) / elementsPerRow;
   var heightElement = 50;
@@ -49,13 +52,15 @@ function create() {
       text = game.add.text(-50, -50, tempEl.symbol, style);
       text.anchor.set(0.5);
 
-      pre_elements.push({rect:rect, name: text})
+      pre_elements.push({rect:rect, name: text, item: tempEl})
     }
 
   }
 }
 
       
+
+
       var tracker = new tracking.ColorTracker(['yellow', 'cyan']);
       
       tracker.setMinDimension(5);

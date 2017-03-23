@@ -23,7 +23,7 @@ function update() {
 			inix = inix ? inix : (circleYellow.x + circleBlue.x)/2;
 			newDistx = ((circleYellow.x + circleBlue.x)/2) - inix;
 			
-			console.log("pointer.firstClick",pointer.firstClick,'leftPanel.activeClicked',leftPanel.activeClicked);
+			//console.log("pointer.firstClick",pointer.firstClick,'leftPanel.activeClicked',leftPanel.activeClicked);
 
 			if(collide(leftPanel, pointer) && (pointer.firstClick || leftPanel.activeClicked) ){
 				leftPanel.activeClicked = true;
@@ -37,9 +37,29 @@ function update() {
 			}
 
 			pre_elements.forEach(function(element){
-				if(collide(element, pointer) && (pointer.firstClick || element.activeClicked) ){
+				if(collide(element.rect, pointer) && (pointer.firstClick || element.activeClicked) ){
 					element.activeClicked = true;
+					if(pointer.firstClick && !tubosEnMundo[element.item.symbol]){
+						createTubo(element.item.symbol, pointer.x, pointer.y);
+						leftPanel.x = -250;
+					}
+					
+					tubosEnMundo[element.item.symbol].sprite.x = pointer.x;
+					tubosEnMundo[element.item.symbol].sprite.y = pointer.y;
+				
+
 				}
+			});
+
+			Object.keys(tubosEnMundo).forEach(function(key){
+				var tubo = tubosEnMundo[key];
+				if(collide(tubo.sprite, pointer) && (pointer.firstClick || tubo.activeClicked) ){
+					tubo.activeClicked = true;
+					tubo.sprite.x = pointer.x;
+					tubo.sprite.y = pointer.y;
+				}
+				
+				 var tmpSprite = tubo.sprite;
 			});
 
 
@@ -53,8 +73,14 @@ function update() {
 		newDistx  = 0
 		inix = 0;
 		pre_elements.forEach(function(element){
-			element.activeClicked = true;
+			element.activeClicked = false;
 		});
+
+		Object.keys(tubosEnMundo).forEach(function(key){
+				var tubo = tubosEnMundo[key];
+				tubo.activeClicked = false;
+				
+			});
 	}
 
 	//console.log(collide(leftPanel, pointer));

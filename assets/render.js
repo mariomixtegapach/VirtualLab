@@ -24,6 +24,13 @@ function render(){
 
 	});
 
+	Object.keys(tubosEnMundo).forEach(function(key){
+				var tubo = tubosEnMundo[key];
+				 game.debug.geom(tubo.sprite);
+			
+
+			});
+
 	var colorYellow = '#fdf814';
 	var colorBlue = '#33b3e8';
 
