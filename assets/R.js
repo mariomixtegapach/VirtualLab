@@ -7,5 +7,6 @@ var R = {
 	bottomTube         : '/imgs/bottomTubeTile.png',
 	element            : '/imgs/element.png',
 	leftPanelPadTop    : '/imgs/left_panel_pad.png',
-	leftPanelPadBottom : '/imgs/left_panel_pad_bottom.png'
+	leftPanelPadBottom : '/imgs/left_panel_pad_bottom.png',
+	table              : '/imgs/table-mask.png'
 }

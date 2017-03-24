@@ -1,17 +1,22 @@
 var pre_elements = [];
+var rrr = new Phaser.Rectangle(200,200,100,100)
 function create() {
+     back = game.add.sprite(0, 0, 'background');
+     table = game.add.sprite(230, 570, 'table');
 
+    
+
+back.scale.set(1.3,1)
    var graphics = game.add.graphics(0, 0);
 
    window.graphics = graphics;
 
    game.physics.startSystem(Phaser.Physics.NINJA);
-   
+    game.physics.ninja.enableAABB(table);
 
 	 circleYellow = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
 	 circleBlue = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
-             //   game.add.sprite(0,0,'background')
-
+  
    game.stage.backgroundColor = "#4488AA";
    leftPanel = game.add.sprite(-250, 0, 'left-panel');
    leftPanel.masker = {
@@ -19,15 +24,14 @@ function create() {
      y  : 246,
      getX : function() { return 250 + leftPanel.x },
      width : 100,
-     height: 334,
-     ylim : 334 
+     height: 334
    }  
 
    
-   
    leftPanel.topMargin = 50;
-
+   leftPanel.maxHeightSize = 0;
    game.world.sendToBack(leftPanel)
+   game.world.sendToBack(back)
 
    var xini = leftPanel.x;
    var xend = leftPanel.x + leftPanel.width - 50;
@@ -38,34 +42,45 @@ function create() {
    var rows = Math.ceil(elementsItems.length / elementsPerRow);
 
    for(var i = 0; i < rows; i++){
-    for(var j = 0; j < elementsPerRow; j++){
-      var tempEl = elementsItems[(i*elementsPerRow)+j];
-      if(tempEl) {
-        var rect = new Phaser.Rectangle(
-          (j*widthElement) ,
-          (i*heightElement) + leftPanel.topMargin,
-          widthElement,
-          heightElement);
-        rect.color = tempEl ? tempEl.cpkHexColor :'000';
-        rect.inix = rect.x;
-        rect.iniy = rect.y;
+      for(var j = 0; j < elementsPerRow; j++){
+        var tempEl = elementsItems[(i*elementsPerRow)+j];
+        if(tempEl) {
+          var rect = new Phaser.Rectangle(
+            (j*widthElement) ,
+            (i*heightElement) + leftPanel.topMargin,
+            widthElement,
+            heightElement);
+          rect.color = tempEl ? tempEl.cpkHexColor :'000';
+          rect.inix = rect.x;
+          rect.iniy = rect.y;
 
-        var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: rect.width, align: "center", fill:getTextColor(rect.color)};
+          var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: rect.width, align: "center", fill:getTextColor(rect.color)};
 
+          leftPanel.maxHeightSize = rect.y;
 
+          text = game.add.text(-50, -50, tempEl.symbol, style);
+          text.anchor.set(0.5);
 
-        text = game.add.text(-50, -50, tempEl.symbol, style);
-        text.anchor.set(0.5);
-
-        pre_elements.push({rect:rect, name: text, item: tempEl})
+          pre_elements.push({rect:rect, name: text, item: tempEl})
+        }
       }
-    }
    }
 
-   leftPanel.topPad    = game.add.sprite(0, 0, 'leftPanelPadTop');
-   leftPanel.bottomPad = game.add.sprite(0, 550, 'leftPanelPadBottom');
+   leftPanel.topPad    = game.add.sprite(leftPanel.x, 0, 'leftPanelPadTop');
+   leftPanel.bottomPad = game.add.sprite(leftPanel.x, leftPanel.height - 50, 'leftPanelPadBottom');
 
-    
+   leftPanel.inputEnabled = true;
+
+   leftPanel.events.onInputDown.add(function(){
+      if(leftPanel.x){  
+       leftPanel.x = 0;
+     } else {
+      leftPanel.x = -250;
+     }
+
+                leftPanel.topPad.x = leftPanel.x;
+                leftPanel.bottomPad.x = leftPanel.x;
+   }, this);   
 }
 
 var tracker = new tracking.ColorTracker(['yellow', 'cyan']);

@@ -16,6 +16,7 @@
   "dependencies": {
     "body-parser": "~1.13.2",
     "cookie-parser": "~1.3.5",
+    "crypto-js": "^3.1.9-1",
     "debug": "~2.2.0",
     "ejs": "~2.3.3",
     "express": "~4.13.1",
@@ -24,8 +25,11 @@
     "gulp-minify-css": "^0.3.0",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^2.0.4",
+    "mongodb": "^2.2.25",
     "morgan": "~1.6.1",
     "periodic-table": "0.0.7",
-    "serve-favicon": "~2.3.0"
+    "q": "^1.5.0",
+    "serve-favicon": "~2.3.0",
+    "underscore": "^1.8.3"
   }
 }

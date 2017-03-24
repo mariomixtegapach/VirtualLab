@@ -161,14 +161,10 @@ function getRandomColor(){
 
 /* -  - - - - - Funciones globales - -- - - - - - -*/
 
-
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', 
+var game = new Phaser.Game(1300, 680, Phaser.AUTO, '', 
 	{ 
 		preload: preload, 
 		create: create, 
 		update: update,
 		render: render 
 	});
-
-
-
