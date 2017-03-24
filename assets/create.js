@@ -1,13 +1,12 @@
 var pre_elements = [];
 
-function create() {
     
 mainGame.create  = function create() {
- back = game.add.sprite(0, 0, 'background');
-     table = game.add.sprite(230, 570, 'table');
-    
+   back = game.add.sprite(0, 0, 'background');
+   table = game.add.sprite(230, 570, 'table');
+        
 
-back.scale.set(1.3,1)
+   back.scale.set(1.3,1)
    var graphics = game.add.graphics(0, 0);
 
    window.graphics = graphics;

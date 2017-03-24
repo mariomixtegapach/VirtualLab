@@ -163,10 +163,5 @@ function getRandomColor(){
 var mainGame = {};
 
 
-var game = new Phaser.Game(1300, 600, Phaser.CANVAS, 'gameFrame');
-
-	game.state.add('menu', menu);
-	game.state.add('compuestopedia', compuestopedia);
-	game.state.add('mainGame', mainGame);
-	game.state.start('menu');
+var game = new Phaser.Game(1300, 600, Phaser.AUTO, 'gameFrame');
 
