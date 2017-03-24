@@ -8,5 +8,15 @@ var R = {
 	element            : '/imgs/element.png',
 	leftPanelPadTop    : '/imgs/left_panel_pad.png',
 	leftPanelPadBottom : '/imgs/left_panel_pad_bottom.png',
-	table              : '/imgs/table-mask.png'
+	labBackgroundBlur  : '/imgs/labBackgroundBlur.jpg',
+	button             : '/imgs/button.png',
+	aboutWindow        : '/img/window.png',
+	boilding           : '/sounds/boilding_background.mp3',
+	clinking           : '/sounds/clinking_background.mp3',
+	mice               : '/sounds/mice_squeacking_background.mp3',
+	desktopBackground  : '/img/desktop_background.jpg',
+	transparentButton  : '/img/transparent_button.gif',
+	book               : '/img/book_sprite_sheet.png',
+	openBook           : '/sounds/open_book_sound.mp3',
+	switchPage         : '/sounds/switch_page.mp3'
 }
