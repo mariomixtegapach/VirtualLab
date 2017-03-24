@@ -10,13 +10,13 @@ var R = {
 	leftPanelPadBottom : '/imgs/left_panel_pad_bottom.png',
 	labBackgroundBlur  : '/imgs/labBackgroundBlur.jpg',
 	button             : '/imgs/button.png',
-	aboutWindow        : '/img/window.png',
+	aboutWindow        : '/imgs/window.png',
 	boilding           : '/sounds/boilding_background.mp3',
 	clinking           : '/sounds/clinking_background.mp3',
 	mice               : '/sounds/mice_squeacking_background.mp3',
-	desktopBackground  : '/img/desktop_background.jpg',
-	transparentButton  : '/img/transparent_button.gif',
-	book               : '/img/book_sprite_sheet.png',
+	desktopBackground  : '/imgs/desktop_background.jpg',
+	transparentButton  : '/imgs/transparent_button.gif',
+	book               : '/imgs/book_sprite_sheet.png',
 	openBook           : '/sounds/open_book_sound.mp3',
 	switchPage         : '/sounds/switch_page.mp3'
 }

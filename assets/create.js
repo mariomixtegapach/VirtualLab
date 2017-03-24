@@ -1,9 +1,10 @@
 var pre_elements = [];
-var rrr = new Phaser.Rectangle(200,200,100,100)
-function create() {
-     back = game.add.sprite(0, 0, 'background');
-     table = game.add.sprite(230, 570, 'table');
 
+function create() {
+    
+mainGame.create  = function create() {
+ back = game.add.sprite(0, 0, 'background');
+     table = game.add.sprite(230, 570, 'table');
     
 
 back.scale.set(1.3,1)
@@ -12,7 +13,9 @@ back.scale.set(1.3,1)
    window.graphics = graphics;
 
    game.physics.startSystem(Phaser.Physics.NINJA);
+
     game.physics.ninja.enableAABB(table);
+
 
 	 circleYellow = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
 	 circleBlue = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
@@ -69,6 +72,7 @@ back.scale.set(1.3,1)
    leftPanel.topPad    = game.add.sprite(leftPanel.x, 0, 'leftPanelPadTop');
    leftPanel.bottomPad = game.add.sprite(leftPanel.x, leftPanel.height - 50, 'leftPanelPadBottom');
 
+
    leftPanel.inputEnabled = true;
 
    leftPanel.events.onInputDown.add(function(){
@@ -81,6 +85,7 @@ back.scale.set(1.3,1)
                 leftPanel.topPad.x = leftPanel.x;
                 leftPanel.bottomPad.x = leftPanel.x;
    }, this);   
+
 }
 
 var tracker = new tracking.ColorTracker(['yellow', 'cyan']);
@@ -107,7 +112,7 @@ tracker.on('track', function(event) {
         yellowRects.width = rect.width;
         yellowRects.height = rect.height;
       }
-      
+
       if(rect.color === 'cyan'){
         blueRects.x = Math.min(rect.x,blueRects.x);
         blueRects.y = Math.min(rect.y,blueRects.y);
@@ -129,4 +134,3 @@ tracker.on('track', function(event) {
           circleBlue.y = (blueRects.y / configDimensions.camHeight)  * game.height;
     }
 });
-
