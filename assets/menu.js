@@ -118,7 +118,7 @@ var menu = {
 
 	},
 	initGame: function(){
-
+		game.state.start('mainGame');
 	},
 	openCompuestopedia: function(){
 		boilding.stop();

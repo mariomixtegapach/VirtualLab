@@ -162,15 +162,6 @@ function getRandomColor(){
 /* -  - - - - - Funciones globales - -- - - - - - -*/
 var mainGame = {};
 
-/*mainGame.preload = preload;
-mainGame.create = create;
-mainGame.update = update;
-mainGame.render =  render;*/
 
+var game = new Phaser.Game(1300, 600, Phaser.AUTO, 'gameFrame');
 
-var game = new Phaser.Game(1300, 600, Phaser.CANVAS, 'gameFrame');
-
-	game.state.add('menu', menu);
-	game.state.add('compuestopedia', compuestopedia);
-	game.state.add('mainGame', mainGame);
-	game.state.start('menu');

@@ -5,6 +5,7 @@ var velocityy = 0;
 var velocityx = 0;
 
 
+
 mainGame.update= function update() {
 
 	distance = Math.sqrt(Math.pow(circleYellow.x - circleBlue.x,2)
@@ -37,6 +38,9 @@ mainGame.update= function update() {
 				} else {
 					leftPanel.x = 0;
 				}
+
+				leftPanel.topPad.x = leftPanel.x;
+                leftPanel.bottomPad.x = leftPanel.x;
 			}
 
 			pre_elements.forEach(function(element){
@@ -110,7 +114,10 @@ mainGame.update= function update() {
 		var tmpSprite = tubo.sprite;
 
 		function collide(elementa,elementb){
-			console.log(elementa.name + ' + '+ elementb.name)
+			if(elementb.name && elementa.name)
+			{
+				//TODO: Checar si es una combinacion chida
+			}
 		}
 
 		if(pastKey){
@@ -122,6 +129,8 @@ mainGame.update= function update() {
 
 		tmpSprite.textName.x = tmpSprite.x;
 		tmpSprite.textName.y = tmpSprite.y;
+		game.physics.ninja.collide(tubo.sprite, table, collide, null, this);
+		
 
 	})
 
