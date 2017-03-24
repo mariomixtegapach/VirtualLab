@@ -8,11 +8,11 @@ var pointer = {
   height : 5
 }
 
-var circleYellow, 
+var circleYellow,
     circleBlue,
-    circlePurple, 
-    circleRed, 
-    click, 
+    circlePurple,
+    circleRed,
+    click,
     distance,
     leftPanel;
 
@@ -36,9 +36,9 @@ function getTextColor(hexColor){
   var blue = parseInt(hexColor.replace('#','').substring(4, 6).toString(), 16)
 
 
-  var text = "#000000" 
+  var text = "#000000"
   if ((red*0.299 + green*0.587 + blue*0.114) > 186){
-     text = "#000000" 
+     text = "#000000"
   } else {
     text='#ffffff';
   }
@@ -54,7 +54,7 @@ function createTubo(sustName, x, y, color){
       console.log(+('0x'+color), color)
    //TODO: Load color and properties
 
-   tmpSprite.masker = { 
+   tmpSprite.masker = {
     getX :function() {
        return tmpSprite.x - 50;
     },
@@ -79,7 +79,7 @@ function createTubo(sustName, x, y, color){
 
         tuboEnsaye.sustances.push(sprite1);
    }*/
-   
+
 
    /*var middleWidth = (tmpSprite.width/2);
    var middleHeight = (tmpSprite.height/2);
@@ -89,8 +89,8 @@ function createTubo(sustName, x, y, color){
      game.add.sprite(x + middleWidth - 10, y - middleHeight, 'leftTube'),
      game.add.sprite(x - middleWidth, y + middleHeight - 20, 'bottomTube')
    ]*/
-    
-   
+
+
 
    game.physics.ninja.enableAABB(tmpSprite);
 
@@ -98,7 +98,7 @@ function createTubo(sustName, x, y, color){
 
       tmpSprite.textName = game.add.text(x, y, sustName, style);
       tmpSprite.textName.anchor.set(0.5);
-   
+
    tubosEnMundo[sustName] = tuboEnsaye;
 
    return tuboEnsaye;
@@ -160,15 +160,17 @@ function getRandomColor(){
 }
 
 /* -  - - - - - Funciones globales - -- - - - - - -*/
+var mainGame;
+
+mainGame.preload = preload;
+mainGame.create = create;
+mainGame.update = update;
+mainGame.render =  render;
 
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', 
-	{ 
-		preload: preload, 
-		create: create, 
-		update: update,
-		render: render 
-	});
+var game = new Phaser.Game(1300, 600, Phaser.AUTO, '');
 
-
-
+	game.state.add('menu', menu);
+	game.state.add('compuestopedia', compuestopedia);
+	game.state.add('mainGame', mainGame);
+	game.state.start('menu');
