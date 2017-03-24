@@ -48,12 +48,4 @@ mainGame.render = function render(){
 
 	}
 
-
-
-
-
-
-
-
-
 }

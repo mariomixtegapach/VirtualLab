@@ -18,5 +18,6 @@ var R = {
 	transparentButton  : '/imgs/transparent_button.gif',
 	book               : '/imgs/book_sprite_sheet.png',
 	openBook           : '/sounds/open_book_sound.mp3',
-	switchPage         : '/sounds/switch_page.mp3'
+	switchPage         : '/sounds/switch_page.mp3',
+	table			   : '/imgs/table-mask.png'
 }

@@ -12,6 +12,12 @@ function httpGetAsync(theUrl, callback) {
 
 var Requester = {
 	GetUnlockedElements : function(callback){
-		httpGetAsync('/elements', callback)
-	}
+		httpGetAsync('/elements', callback);
+	},
+    TryCombination : function(elementA, elementB, callback){
+        httpGetAsync('/try/'+elementA+'/'+elementB, callback);
+    },
+    Unlock : function(element, callback){
+      httpGetAsync('/unlock/'+element, callback);  
+    }
 }

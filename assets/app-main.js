@@ -163,5 +163,5 @@ function getRandomColor(){
 var mainGame = {};
 
 
-var game = new Phaser.Game(1300, 600, Phaser.AUTO, 'gameFrame');
+var game = new Phaser.Game(1300, 680, Phaser.AUTO, 'gameFrame');
 

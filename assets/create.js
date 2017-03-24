@@ -62,7 +62,7 @@ mainGame.create  = function create() {
 
           text = game.add.text(-50, -50, tempEl.symbol, style);
           text.anchor.set(0.5);
-
+          game.world.bringToTop(text)
           pre_elements.push({rect:rect, name: text, item: tempEl})
         }
       }
