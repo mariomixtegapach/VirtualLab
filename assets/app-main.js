@@ -8,13 +8,13 @@ var pointer = {
   height : 5
 }
 
-var circleYellow,
-    circleBlue,
-    circlePurple,
-    circleRed,
-    click,
-    distance,
-    leftPanel;
+var circleYellow ={},
+    circleBlue ={},
+    circlePurple = {},
+    circleRed = {},
+    click = {},
+    distance = {},
+    leftPanel = {};
 
 var tubosEnMundo = {};
 
@@ -160,15 +160,15 @@ function getRandomColor(){
 }
 
 /* -  - - - - - Funciones globales - -- - - - - - -*/
-var mainGame;
+var mainGame = {};
 
-mainGame.preload = preload;
+/*mainGame.preload = preload;
 mainGame.create = create;
 mainGame.update = update;
-mainGame.render =  render;
+mainGame.render =  render;*/
 
 
-var game = new Phaser.Game(1300, 600, Phaser.AUTO, '');
+var game = new Phaser.Game(1300, 600, Phaser.CANVAS, 'gameFrame');
 
 	game.state.add('menu', menu);
 	game.state.add('compuestopedia', compuestopedia);

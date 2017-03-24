@@ -1,4 +1,4 @@
-function render(){
+mainGame.render = function render(){
 	graphics.clear();
 	pre_elements.forEach(function(elementItem){
 
@@ -27,7 +27,7 @@ function render(){
 	Object.keys(tubosEnMundo).forEach(function(key){
 				var tubo = tubosEnMundo[key];
 				 game.debug.geom(tubo.sprite);
-			
+
 
 			});
 
@@ -40,20 +40,20 @@ function render(){
 
 	if(circleYellow.x != Infinity){
 	 game.debug.geom(circleYellow,colorYellow);
-	
+
 	}
-	
+
 	if(circleBlue.x != Infinity){
 	 game.debug.geom(circleBlue,colorBlue);
-	
+
 	}
 
 
-	
 
 
 
 
-	
-	
+
+
+
 }

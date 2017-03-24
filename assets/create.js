@@ -1,12 +1,12 @@
 var pre_elements = [];
-function create() {
+mainGame.create  = function create() {
 
    var graphics = game.add.graphics(0, 0);
 
    window.graphics = graphics;
 
    game.physics.startSystem(Phaser.Physics.NINJA);
-   
+
 
 	 circleYellow = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
 	 circleBlue = new Phaser.Circle(game.world.centerX, game.world.centerY,12);
@@ -20,11 +20,11 @@ function create() {
      getX : function() { return 250 + leftPanel.x },
      width : 100,
      height: 334,
-     ylim : 334 
-   }  
+     ylim : 334
+   }
 
-   
-   
+
+
    leftPanel.topMargin = 50;
 
    game.world.sendToBack(leftPanel)
@@ -65,7 +65,7 @@ function create() {
    leftPanel.topPad    = game.add.sprite(0, 0, 'leftPanelPadTop');
    leftPanel.bottomPad = game.add.sprite(0, 550, 'leftPanelPadBottom');
 
-    
+
 }
 
 var tracker = new tracking.ColorTracker(['yellow', 'cyan']);
@@ -92,7 +92,7 @@ tracker.on('track', function(event) {
         yellowRects.width = rect.width;
         yellowRects.height = rect.height;
       }
-      
+
       if(rect.color === 'cyan'){
         blueRects.x = Math.min(rect.x,blueRects.x);
         blueRects.y = Math.min(rect.y,blueRects.y);
@@ -114,4 +114,3 @@ tracker.on('track', function(event) {
           circleBlue.y = (blueRects.y / configDimensions.camHeight)  * game.height;
     }
 });
-
