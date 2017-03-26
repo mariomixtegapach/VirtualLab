@@ -67,8 +67,12 @@ var compuestopedia = {
 		bookSprite.animations.add('reverseSwhichSheet', [7, 6, 13, 5, 12, 4, 11, 3, 10, 2, 9, 8, 7], 7);
 		bookSprite.animations.add('closeBook', [15, 16, 17, 18, 19], 15);
 		bookSprite.animations.add('ReverseCloseBook', [19, 18, 17, 16, 15, 7], 19);
-
+		
 		openBookSound.play();
+		game.add.text(game.width/3, game.height/4, '');
+		game.add.text(game.width/3, game.height/4, '');
+		game.add.text(game.width/3, game.height/4, '');
+		game.add.text(game.width/3, game.height/4, '');
 		bookSprite.animations.play('open').onComplete.add(function(){
 			compuestopedia.getCompuesto();
 		});
