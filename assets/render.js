@@ -4,38 +4,36 @@ mainGame.render = function render(){
 
 		var element = elementItem.rect;
 
+
    	 	graphics.beginFill(+('0x'+element.color));
 
-    	graphics.moveTo(element.inix + leftPanel.x,element.iniy + leftPanel.y);
-	    graphics.lineTo(element.inix + leftPanel.x + element.width, element.iniy + leftPanel.y);
-	    graphics.lineTo(element.inix + leftPanel.x + element.width, element.iniy + leftPanel.y + element.height);
-	    graphics.lineTo(element.inix + leftPanel.x, element.iniy + leftPanel.y + element.height);
-	    graphics.moveTo(element.inix + leftPanel.x,element.iniy + leftPanel.y);
+    	graphics.moveTo(element.inix + leftPanel.x,element.iniy + leftPanel.y - relativeY);
+	    graphics.lineTo(element.inix + leftPanel.x + element.width, element.iniy + leftPanel.y - relativeY);
+	    graphics.lineTo(element.inix + leftPanel.x + element.width, element.iniy + leftPanel.y + element.height - relativeY);
+	    graphics.lineTo(element.inix + leftPanel.x, element.iniy + leftPanel.y + element.height - relativeY);
+	    graphics.moveTo(element.inix + leftPanel.x,element.iniy + leftPanel.y - relativeY);
+
 	    graphics.endFill();
 
 
-		elementItem.name.x = element.x + (element.width/2);
-		elementItem.name.y = element.y + (element.height/2);
-
-		element.x = element.inix + leftPanel.x;
-		element.y = element.iniy + leftPanel.y;
+		
 
 		//game.debug.geom(element);
 
 	});
 
-	Object.keys(tubosEnMundo).forEach(function(key){
+	/*Object.keys(tubosEnMundo).forEach(function(key){
 				var tubo = tubosEnMundo[key];
-				 game.debug.geom(tubo.sprite);
+				 //game.debug.geom(tubo.sprite);
 
 
-			});
+			});*/
 
 	var colorYellow = '#fdf814';
 	var colorBlue = '#33b3e8';
 
 	if(click != null){
-		colorYellow = colorBlue = '#09a28a';
+		colorYellow = colorBlue = '#FFaabb';
 	}
 
 	if(circleYellow.x != Infinity){
@@ -45,7 +43,11 @@ mainGame.render = function render(){
 
 	if(circleBlue.x != Infinity){
 	 game.debug.geom(circleBlue,colorBlue);
-
 	}
+
+	leftPanel.topPad.x    = leftPanel.x;
+    leftPanel.bottomPad.x = leftPanel.x;
+
+
 
 }

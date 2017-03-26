@@ -50,6 +50,16 @@ var CompuestosService = function(config){
             
             return defer.promise;
         },
+        UpdateCompuestoBySymbol: function(symbol, state){
+            var defer = q.defer();
+            dao.update({ compuestoKey : symbol},{locked : state}).then(function(compuestos){
+              defer.resolve(compuestos);
+            }, function(err){
+                defer.reject(err);
+            });
+            
+            return defer.promise;
+        },
         GetUnlockedCompuestos :function(){
             var defer = q.defer();
             dao.get({

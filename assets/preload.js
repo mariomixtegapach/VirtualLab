@@ -10,6 +10,6 @@ mainGame.preload = function preload() {
 	 game.load.image('leftPanelPadTop', R.leftPanelPadTop );	
 	 game.load.image('leftPanelPadBottom', R.leftPanelPadBottom );	
 	 game.load.image('table',R.table)
-
+	 game.load.image('notification', R.notification);
 	 game.load.spritesheet('balls', R.ball, 17, 17);
 }

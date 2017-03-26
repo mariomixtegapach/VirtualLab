@@ -1,0 +1,1 @@
+node mapper && mongo virtualab --eval "db.Compuesto.drop()" && mongoimport --db virtualab --collection Compuesto --file res.json --jsonArray

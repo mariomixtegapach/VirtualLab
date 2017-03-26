@@ -1,7 +1,14 @@
 var pre_elements = [];
-
+var hintTxt = {};
     
 mainGame.create  = function create() {
+
+textGroup = game.add.group();
+itemsGroup = game.add.group();
+ 
+ 
+
+
    back = game.add.sprite(0, 0, 'background');
    table = game.add.sprite(230, 570, 'table');
         
@@ -37,12 +44,24 @@ mainGame.create  = function create() {
 
    var xini = leftPanel.x;
    var xend = leftPanel.x + leftPanel.width - 50;
-   var elementsPerRow = 6;
+   var elementsPerRow = 4;
 
    var widthElement = (xend -xini) / elementsPerRow;
    var heightElement = 50;
    var rows = Math.ceil(elementsItems.length / elementsPerRow);
 
+
+   hintTxt = game.add.text(0, 0, '', {});
+   game.add.text(-50, -50, '', {});
+   game.add.text(-50, -50, '', {});
+   game.add.text(-50, -50, '', {});
+   game.add.text(-50, -50, '', {});
+   game.add.text(-50, -50, '', {});
+   game.add.text(-50, -50, '', {});
+   game.add.text(-50, -50, '', {});
+   game.add.text(-50, -50, '', {});
+   game.add.text(-50, -50, '', {});
+   
    for(var i = 0; i < rows; i++){
       for(var j = 0; j < elementsPerRow; j++){
         var tempEl = elementsItems[(i*elementsPerRow)+j];
@@ -62,7 +81,7 @@ mainGame.create  = function create() {
 
           text = game.add.text(-50, -50, tempEl.symbol, style);
           text.anchor.set(0.5);
-          game.world.bringToTop(text)
+          
           pre_elements.push({rect:rect, name: text, item: tempEl})
         }
       }
@@ -81,11 +100,11 @@ mainGame.create  = function create() {
       leftPanel.x = -250;
      }
 
-                leftPanel.topPad.x = leftPanel.x;
-                leftPanel.bottomPad.x = leftPanel.x;
+                
    }, this);   
 
 }
+
 
 var tracker = new tracking.ColorTracker(['yellow', 'cyan']);
 

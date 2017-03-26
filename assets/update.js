@@ -1,4 +1,4 @@
-var threeshold = 50;
+var threeshold = 55;
 var inix = 0;
 var newDistx  = 0
 var velocityy = 0;
@@ -39,12 +39,28 @@ mainGame.update= function update() {
 					leftPanel.x = 0;
 				}
 
-				leftPanel.topPad.x = leftPanel.x;
-                leftPanel.bottomPad.x = leftPanel.x;
+				//leftPanel.topPad.x = leftPanel.x;
+                //leftPanel.bottomPad.x = leftPanel.x;
+			}
+
+			if(collide(leftPanel.bottomPad, pointer) && (pointer.firstClick || leftPanel.bottomPad.activeClicked) ){
+				leftPanel.bottomPad.activeClicked = true;
+				
+				 if(relativeY < (leftPanel.maxHeightSize + 50) - (leftPanel.height - 20)){
+						relativeY+=3;
+				 }				
+			}
+
+			if(collide(leftPanel.topPad, pointer) && (pointer.firstClick || leftPanel.topPad.activeClicked) ){
+				leftPanel.topPad.activeClicked = true;
+				
+				 if(relativeY > 0){
+						relativeY-=3;
+				 }				
 			}
 
 			pre_elements.forEach(function(element){
-				if(collide(element.rect, pointer) && (pointer.firstClick || element.activeClicked) ){
+				if(collide(element.rect, pointer) && (pointer.firstClick || element.activeClicked) && element.rect.y+element.rect.height < leftPanel.height - 60 && element.rect.y >= 50){
 					element.activeClicked = true;
 					if(pointer.firstClick && !tubosEnMundo[element.item.symbol]){
 						createTubo(element.item.symbol, pointer.x, pointer.y, element.rect.color);
@@ -63,7 +79,7 @@ mainGame.update= function update() {
 				if(collide(tubo.sprite, pointer) && (pointer.firstClick || tubo.activeClicked) ){
 					tubo.activeClicked = true;
 
-					if(tubo.sprite.x - pointer.x > 5){
+					/*if(tubo.sprite.x - pointer.x > 5){
 						tubo.sprite.body.moveLeft(20);
 					}
 
@@ -77,7 +93,10 @@ mainGame.update= function update() {
 
 					if(tubo.sprite.y - pointer.y > 5){
 						tubo.sprite.body.moveUp(20);
-					}
+					}*/
+
+					tubo.sprite.body.x = pointer.x;
+					tubo.sprite.body.y = pointer.y;
 
 
 					velocityx = Math.abs(tubo.sprite.x - pointer.x)/2;
@@ -96,6 +115,8 @@ mainGame.update= function update() {
 		click = null;
 		pointer.clicked = false;
 		newDistx  = 0
+		leftPanel.bottomPad.activeClicked = false;
+		leftPanel.topPad.activeClicked = false;
 		inix = 0;
 		pre_elements.forEach(function(element){
 			element.activeClicked = false;
@@ -116,23 +137,87 @@ mainGame.update= function update() {
 		function collide(elementa,elementb){
 			if(elementb.name && elementa.name)
 			{
-				//TODO: Checar si es una combinacion chida
+				if(!collisionsData[elementb.name+elementa.name] && !collisionsData[elementa.name+elementb.name]){
+					Requester.TryCombination(elementb.name ,elementa.name, function(response){
+						if(!response.err){
+							var xCom = (elementb.x + elementa.x) / 2, 
+							yCom = (elementb.y + elementa.y) / 2;
+
+							createTubo(response.element[0].compuestoKey, 
+								xCom, yCom, 'a5a47e');
+
+							if(!response.element[0].locked){
+								Requester.Unlock(response.element[0].compuestoKey, function(){
+									notification(response.element[0].compuestoKey);
+								});
+							}
+
+							delete tubosEnMundo[elementb.name];
+							delete tubosEnMundo[elementa.name];
+							elementa.textName.kill();
+							elementb.textName.kill();
+							elementb.kill();
+							elementa.kill();
+						} else {
+							if(elementb && elementa){
+								elementb.activeClicked = false;
+								elementb.body.moveRight(80);
+								elementa.activeClicked = false;
+								elementa.body.moveLeft(80);
+							}
+						}
+					});
+
+					collisionsData[elementb.name+elementa.name] = setTimeout(function(){
+						delete collisionsData[elementb.name+elementa.name];
+					}, 2000);
+				} else {
+					clearTimeout(collisionsData[elementb.name+elementa.name]);
+					collisionsData[elementb.name+elementa.name] = setTimeout(function(){
+						delete collisionsData[elementb.name+elementa.name];
+					}, 2000);
+				}
 			}
 		}
 
-		if(pastKey){
-			var pastSprite =tubosEnMundo[pastKey].sprite;
-			game.physics.ninja.collide(tubo.sprite, pastSprite, collide, null, this);
-		} else {
+		//if(pastKey &&  tubosEnMundo[pastKey]){
+			Object.keys(tubosEnMundo).forEach(function(subKey){
+				if(key != subKey){
+					var pastSprite = tubosEnMundo[subKey].sprite;
+					game.physics.ninja.collide(tubo.sprite, pastSprite, collide, null, this);
+				}
+			})
+			
+		/*} else {
 			pastKey = key;
-		}
+		}*/
 
-		tmpSprite.textName.x = tmpSprite.x;
-		tmpSprite.textName.y = tmpSprite.y;
+		//tmpSprite.textName.x = tmpSprite.x;
+		///tmpSprite.textName.y = tmpSprite.y;
 		game.physics.ninja.collide(tubo.sprite, table, collide, null, this);
 		
 
 	})
+
+
+	pre_elements.forEach(function(elementItem){ 
+		var element = elementItem.rect;
+
+		element.x = element.inix + leftPanel.x;
+		element.y = element.iniy + leftPanel.y - relativeY;
+
+		elementItem.name.x = element.x + (element.width/2);
+		elementItem.name.y = element.y + (element.height/2);
+
+		
+	});
+
+	 game.world.sendToBack(leftPanel)
+     game.world.sendToBack(back)
+
+     game.world.bringToTop(itemsGroup);
+     game.world.bringToTop(textGroup);
+     
 
 
 }

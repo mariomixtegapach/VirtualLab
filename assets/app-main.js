@@ -8,6 +8,11 @@ var pointer = {
   height : 5
 }
 
+var relativeY = 0;
+
+var textGroup;  //= game.add.group();
+var itemsGroup; //= game.add.group();
+
 var circleYellow ={},
     circleBlue ={},
     circlePurple = {},
@@ -18,10 +23,13 @@ var circleYellow ={},
 
 var tubosEnMundo = {};
 
+
 var configDimensions = {
 	camWidth : video.width,
 	camHeight : video.height
 };
+
+var collisionsData = {};
 
 /* - - -  -  - Variables globales - - - -  - - -*/
 
@@ -29,7 +37,7 @@ var configDimensions = {
 
 function getTextColor(hexColor){
 
-  if(typeof hexColor != 'string') hexColor = hexColor.toString();
+  if(typeof hexColor != 'string') hexColor = hexColor ? hexColor.toString() : 'FFFFFF';
 
   var red = parseInt(hexColor.replace('#','').substring(0, 2).toString(), 16)
   var green = parseInt(hexColor.replace('#','').substring(2, 4).toString(), 16)
@@ -48,6 +56,7 @@ function getTextColor(hexColor){
 
 function createTubo(sustName, x, y, color){
   var tmpSprite = game.add.sprite(x, y, 'element');
+  itemsGroup.add(tmpSprite);
      tmpSprite.anchor.set(0.5,0.5);
       tmpSprite.name = sustName
       tmpSprite.tint = +('0x'+color);
@@ -72,7 +81,6 @@ function createTubo(sustName, x, y, color){
       touched : false
    };
 
-
    /*for(var i = 0; i < 10; i++){
     var sprite1 = game.add.sprite(tmpSprite.x -  game.rnd.realInRange(5, 10), tmpSprite.y - 100, 'balls');
         sprite1.scale.setTo(0.5, 0.5);
@@ -95,11 +103,19 @@ function createTubo(sustName, x, y, color){
    game.physics.ninja.enableAABB(tmpSprite);
 
   var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: tmpSprite.width, align: "center", fill:getTextColor(color)};
+  tmpSprite.z = 10000;
+      tmpSprite.textName = tmpSprite.addChild(game.add.text(0, 0, sustName, style));
 
-      tmpSprite.textName = game.add.text(x, y, sustName, style);
+      tmpSprite.textName.z = 10000;
+      //textGroup.add(tmpSprite.textName)
       tmpSprite.textName.anchor.set(0.5);
+      
+      game.world.bringToTop(itemsGroup);
+      //game.world.bringToTop(textGroup);
 
    tubosEnMundo[sustName] = tuboEnsaye;
+
+   console.log("Element created", tmpSprite, tmpSprite.textName, sustName)
 
    return tuboEnsaye;
 }
@@ -158,6 +174,27 @@ function getRandomColor(){
   return color;
 
 }
+
+function notification(text){
+  var ss = game.add.sprite(1000,-100,'notification');
+  var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: ss.width, align: "center"};
+  var text = game.add.text(ss.width/2,(ss.height/2)+10, text, style);
+  text.anchor.set(0.5);
+  ss.addChild(text);
+
+  tween = game.add.tween(ss).to( { y: 20 }, 1500, Phaser.Easing.Bounce.Out, true);
+    
+
+  setTimeout(function(){
+    text.kill();
+    ss.kill();
+  }, 3000);
+
+}
+
+
+
+
 
 /* -  - - - - - Funciones globales - -- - - - - - -*/
 var mainGame = {};
