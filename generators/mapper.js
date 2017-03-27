@@ -7,6 +7,7 @@ var readline = require('linebyline'),
      map[line.trim()] = {
 		  "compuestoKey": line.trim(),
 		  "name":"",
+      "color":"",
 		  "components": [],
 		  "description": "",
 		  "image": "", 

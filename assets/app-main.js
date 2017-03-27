@@ -7,11 +7,19 @@ var pointer = {
   width: 5,
   height : 5
 }
-
+var intervalBetweenHints = 5000*60;
+var hintsTexts = [
+  "Recuerda los elementos diatomicos",
+  "¿Has escuchado hablar de los radicales?",
+  "Dicen que el 'OH' se combina con muchas cosas",
+  "El otro dia escuche que 'H' era muy social...",
+  "Si se pudo con dos, talvez se pueda con tres"]
 var relativeY = 0;
 
 var textGroup;  //= game.add.group();
 var itemsGroup; //= game.add.group();
+var compuestosPanel = [];
+var dump = {};
 
 var circleYellow ={},
     circleBlue ={},
@@ -34,7 +42,6 @@ var collisionsData = {};
 /* - - -  -  - Variables globales - - - -  - - -*/
 
 /* -  - - - - - Funciones globales - -- - - - - - -*/
-
 function getTextColor(hexColor){
 
   if(typeof hexColor != 'string') hexColor = hexColor ? hexColor.toString() : 'FFFFFF';
@@ -60,6 +67,7 @@ function createTubo(sustName, x, y, color){
      tmpSprite.anchor.set(0.5,0.5);
       tmpSprite.name = sustName
       tmpSprite.tint = +('0x'+color);
+      tmpSprite.eColor = color.toString();
       console.log(+('0x'+color), color)
    //TODO: Load color and properties
 
@@ -113,7 +121,10 @@ function createTubo(sustName, x, y, color){
       game.world.bringToTop(itemsGroup);
       //game.world.bringToTop(textGroup);
 
-   tubosEnMundo[sustName] = tuboEnsaye;
+   tubosEnMundo[sustName] = tubosEnMundo[sustName] ? tubosEnMundo[sustName] : [];
+   tubosEnMundo[sustName].push(tuboEnsaye);
+
+   tuboEnsaye.sprite.idForDelete = new Date().getTime();
 
    console.log("Element created", tmpSprite, tmpSprite.textName, sustName)
 
@@ -192,8 +203,92 @@ function notification(text){
 
 }
 
+function showHint(){
+
+  var indice = Math.floor(Math.random() * 1000 ) %hintsTexts.length;
+  var text = hintsTexts[indice];
+
+  var ss = game.add.sprite(game.world.width/2,-100,'hint');
+  var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: ss.width, align: "center"};
+  var text = game.add.text(0,10, text, style);
+  ss.anchor.set(0.5)
+  text.anchor.set(0.5);
+  ss.addChild(text);
+
+  tween = game.add.tween(ss).to( { y: 100 }, 1500, Phaser.Easing.Exponential.Out, true);
+    
+
+  setTimeout(function(){
+
+    game.add.tween(ss).to( { y: -100 }, 1500, Phaser.Easing.Exponential.Out, true)
+      .onComplete.add(function(){
+        text.kill();
+        ss.kill();
+      });
+
+    
+  }, 20000);
+
+}
 
 
+
+function loadCompuestos(){
+  Requester.GetUnlockedElements(function(uElements){
+
+    if(compuestosPanel && compuestosPanel.length){
+      compuestosPanel.forEach(function(compuesto){
+        compuesto.name.kill();
+      });  
+    }
+
+    compuestosPanel = [];
+    uElements.elements.forEach(function(compuesto){
+      var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: (leftPanel.width - 50)/ 3, align: "center", fill:getTextColor(compuesto.color)};
+       compuesto.name = game.add.text(-50, -50, compuesto.compuestoKey, style);
+       compuesto.name.anchor.set(0.5);
+       //itemsGroup.add(compuesto.name)
+       //compuesto.name.z = 10000;
+       compuestosPanel.push({
+        rect : {},
+        name : compuesto.name,
+        item: {
+          color : compuesto.color,
+          symbol : compuesto.compuestoKey
+        }
+       })
+
+    });
+    console.log(uElements.elements);
+  });
+}
+
+var averageRGB = (function () {
+
+ 
+  var reSegment = /[\da-z]{2}/gi;
+
+  
+  function dec2hex(v) {return v.toString(16);}
+  function hex2dec(v) {return parseInt(v,16);}
+
+  return function (c1, c2) {
+
+    
+    var b1 = c1.match(reSegment);
+    var b2 = c2.match(reSegment);
+    var t, c = [];
+
+   
+    for (var i=b1.length; i;) {
+      t = dec2hex( (hex2dec(b1[--i]) + hex2dec(b2[i])) >> 1 );
+
+    
+      c[i] = t.length == 2? '' + t : '0' + t; 
+    }
+    return  c.join('');
+  }
+}());
 
 
 /* -  - - - - - Funciones globales - -- - - - - - -*/

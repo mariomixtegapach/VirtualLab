@@ -40,9 +40,9 @@ var CompuestosService = function(config){
             
             return defer.promise;
         },
-        UpdateCompuestoById: function(compuestoId, state){
+        UpdateCompuestoById: function(compuestoId, state, color){
             var defer = q.defer();
-            dao.update({ _id: new ObjectId(compuestoId) },{locked : state}).then(function(compuestos){
+            dao.update({ _id: new ObjectId(compuestoId) },{locked : state, color: color}).then(function(compuestos){
               defer.resolve(compuestos);
             }, function(err){
                 defer.reject(err);
@@ -50,9 +50,9 @@ var CompuestosService = function(config){
             
             return defer.promise;
         },
-        UpdateCompuestoBySymbol: function(symbol, state){
+        UpdateCompuestoBySymbol: function(symbol, state, color){
             var defer = q.defer();
-            dao.update({ compuestoKey : symbol},{locked : state}).then(function(compuestos){
+            dao.update({ compuestoKey : symbol},{locked : state,  color: color}).then(function(compuestos){
               defer.resolve(compuestos);
             }, function(err){
                 defer.reject(err);
@@ -63,7 +63,7 @@ var CompuestosService = function(config){
         GetUnlockedCompuestos :function(){
             var defer = q.defer();
             dao.get({
-                unlocked : true
+                locked : true
             }).then(function(compuestos){
                 defer.resolve(compuestos);
             }, function(err){
@@ -76,7 +76,7 @@ var CompuestosService = function(config){
         GetIsLocked :function(compuestoId){
             var defer = q.defer();
             dao.get({ _id : new ObjectId(compuestoId)}).then(function(compuesto){
-                defer.resolve(compuesto.result[0].unlocked);
+                defer.resolve(compuesto.result[0].locked);
             }, function(err){
                 defer.reject(err);
             });

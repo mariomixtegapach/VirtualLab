@@ -1,13 +1,16 @@
 var pre_elements = [];
 var hintTxt = {};
-    
+  
+
+
 mainGame.create  = function create() {
 
 textGroup = game.add.group();
 itemsGroup = game.add.group();
  
- 
-
+ setInterval(function(){
+  showHint();
+ },intervalBetweenHints)
 
    back = game.add.sprite(0, 0, 'background');
    table = game.add.sprite(230, 570, 'table');
@@ -77,7 +80,8 @@ itemsGroup = game.add.group();
 
           var style = { font: "30px Arial", wordWrap: true, wordWrapWidth: rect.width, align: "center", fill:getTextColor(rect.color)};
 
-          leftPanel.maxHeightSize = rect.y;
+          leftPanel.maxHeightSizeElements = rect.y + heightElement;
+          leftPanel.maxHeightSize = rect.y + heightElement;
 
           text = game.add.text(-50, -50, tempEl.symbol, style);
           text.anchor.set(0.5);
@@ -87,9 +91,16 @@ itemsGroup = game.add.group();
       }
    }
 
+   loadCompuestos();
+
    leftPanel.topPad    = game.add.sprite(leftPanel.x, 0, 'leftPanelPadTop');
    leftPanel.bottomPad = game.add.sprite(leftPanel.x, leftPanel.height - 50, 'leftPanelPadBottom');
+   
+   itemsGroup.add(leftPanel.topPad)
+   itemsGroup.add(leftPanel.bottomPad)
 
+   leftPanel.topPad.z = 1000;
+   leftPanel.bottomPad.z = 1000;
 
    leftPanel.inputEnabled = true;
 
@@ -102,6 +113,13 @@ itemsGroup = game.add.group();
 
                 
    }, this);   
+
+
+   dump = game.add.sprite( 1000 , 0, 'dump');
+   dump.x = game.world.width - dump.width;
+   dump.y = game.world.height - dump.height;
+
+   game.physics.ninja.enableAABB(dump);
 
 }
 

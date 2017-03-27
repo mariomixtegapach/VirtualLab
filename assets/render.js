@@ -14,20 +14,45 @@ mainGame.render = function render(){
 	    graphics.moveTo(element.inix + leftPanel.x,element.iniy + leftPanel.y - relativeY);
 
 	    graphics.endFill();
-
-
-		
-
-		//game.debug.geom(element);
-
 	});
 
-	/*Object.keys(tubosEnMundo).forEach(function(key){
-				var tubo = tubosEnMundo[key];
-				 //game.debug.geom(tubo.sprite);
+	var heightCopmuesto = 100;
+	var compuestoByRow  = 3;
+	var widthCompuesto  = (leftPanel.width - 50) / compuestoByRow;
+
+	compuestosPanel.forEach(function(compuesto, i){
+		var xx = i % compuestoByRow;
+		var yy = Math.floor(i / compuestoByRow) * heightCopmuesto;
+
+		var element = {
+			inix : xx * widthCompuesto,
+			iniy : yy + leftPanel.maxHeightSizeElements,
+			width: widthCompuesto,
+			height: heightCopmuesto
+		}
+
+		graphics.beginFill(+('0x'+compuesto.item.color));
+
+    	graphics.moveTo(element.inix + leftPanel.x,element.iniy + leftPanel.y - relativeY);
+	    graphics.lineTo(element.inix + leftPanel.x + element.width, element.iniy + leftPanel.y - relativeY);
+	    graphics.lineTo(element.inix + leftPanel.x + element.width, element.iniy + leftPanel.y + element.height - relativeY);
+	    graphics.lineTo(element.inix + leftPanel.x, element.iniy + leftPanel.y + element.height - relativeY);
+	    graphics.moveTo(element.inix + leftPanel.x,element.iniy + leftPanel.y - relativeY);
+
+	    graphics.endFill();
 
 
-			});*/
+
+		element.x = element.inix + leftPanel.x;
+		element.y = element.iniy + leftPanel.y - relativeY;
+
+		compuesto.name.x = element.x + (element.width/2);
+		compuesto.name.y = element.y + (element.height/2);
+
+		compuesto.rect = element;
+		leftPanel.maxHeightSize = Math.max(leftPanel.maxHeightSize, element.iniy + heightCopmuesto )
+
+	});
 
 	var colorYellow = '#fdf814';
 	var colorBlue = '#33b3e8';

@@ -20,5 +20,7 @@ var R = {
 	openBook           : '/sounds/open_book_sound.mp3',
 	switchPage         : '/sounds/switch_page.mp3',
 	table			   : '/imgs/table-mask.png',
-	notification       : '/imgs/notification.png'
+	notification       : '/imgs/notification.png',
+	hint               : '/imgs/hint.png',
+	dump 			   : '/imgs/dump.png'
 }

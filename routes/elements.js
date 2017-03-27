@@ -40,7 +40,7 @@ function getCombination(a, b){
 }
 
 router.get('/', function(req, res) {
-  compuestoServices.GetAllElements().then(function(elements){
+  compuestoServices.GetUnlockedCompuestos().then(function(elements){
   	res.json({ elements: elements});
   }, function(err){
     console.log(err)
@@ -48,11 +48,12 @@ router.get('/', function(req, res) {
   })
 });
 
-router.get('/unlock/:symbol', function(req, res) {
+router.get('/unlock/:symbol/:color', function(req, res) {
 
 	var symbol = req.params.symbol;
+  var color = req.params.color;
 
-  compuestoServices.UpdateCompuestoBySymbol(symbol,true).then(function(elements){
+  compuestoServices.UpdateCompuestoBySymbol(symbol,true,color).then(function(elements){
   	res.json({ elements: elements});
   }, function(err){
   	res.json({err: true, message: err.message});

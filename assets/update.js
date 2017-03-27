@@ -39,14 +39,15 @@ mainGame.update= function update() {
 					leftPanel.x = 0;
 				}
 
-				//leftPanel.topPad.x = leftPanel.x;
-                //leftPanel.bottomPad.x = leftPanel.x;
+				if(pointer.firstClick){
+					loadCompuestos()
+				}
 			}
 
 			if(collide(leftPanel.bottomPad, pointer) && (pointer.firstClick || leftPanel.bottomPad.activeClicked) ){
 				leftPanel.bottomPad.activeClicked = true;
 				
-				 if(relativeY < (leftPanel.maxHeightSize + 50) - (leftPanel.height - 20)){
+				 if(relativeY < (leftPanel.maxHeightSize + 100) - (leftPanel.height - 150)){
 						relativeY+=3;
 				 }				
 			}
@@ -62,48 +63,72 @@ mainGame.update= function update() {
 			pre_elements.forEach(function(element){
 				if(collide(element.rect, pointer) && (pointer.firstClick || element.activeClicked) && element.rect.y+element.rect.height < leftPanel.height - 60 && element.rect.y >= 50){
 					element.activeClicked = true;
-					if(pointer.firstClick && !tubosEnMundo[element.item.symbol]){
-						createTubo(element.item.symbol, pointer.x, pointer.y, element.rect.color);
+					var ind = -1;
+					if(pointer.firstClick /*&& !tubosEnMundo[element.item.symbol]*/){
+						var ind = createTubo(element.item.symbol, pointer.x, pointer.y, element.rect.color);
 						leftPanel.x = -250;
 					}
 
-					tubosEnMundo[element.item.symbol].sprite.x = pointer.x;
-					tubosEnMundo[element.item.symbol].sprite.y = pointer.y;
+					if(ind > 0){
+						tubosEnMundo[element.item.symbol][ind].sprite.x = pointer.x;
+						tubosEnMundo[element.item.symbol][ind].sprite.y = pointer.y;
+					}
+
+
+				}
+			});
+
+			compuestosPanel.forEach(function(element){
+				if(element.rect.width  && collide(element.rect, pointer) && (pointer.firstClick || element.activeClicked) && element.rect.y+element.rect.height < leftPanel.height - 50 && element.rect.y >= 50){
+					element.activeClicked = true;
+					var ind = -1;
+					if(pointer.firstClick /*&& !tubosEnMundo[element.item.symbol]*/){
+						createTubo(element.item.symbol, pointer.x, pointer.y, element.item.color);
+						leftPanel.x = -250;
+					}
+
+					if(ind > 0){
+						tubosEnMundo[element.item.symbol][ind].sprite.x = pointer.x;
+						tubosEnMundo[element.item.symbol][ind].sprite.y = pointer.y;
+					}
 
 
 				}
 			});
 
 			Object.keys(tubosEnMundo).forEach(function(key){
-				var tubo = tubosEnMundo[key];
-				if(collide(tubo.sprite, pointer) && (pointer.firstClick || tubo.activeClicked) ){
-					tubo.activeClicked = true;
+				var tubos = tubosEnMundo[key];
+				tubos.forEach(function(tubo){
+					if(collide(tubo.sprite, pointer) && (pointer.firstClick || tubo.activeClicked) ){
+						tubo.activeClicked = true;
 
-					/*if(tubo.sprite.x - pointer.x > 5){
-						tubo.sprite.body.moveLeft(20);
-					}
+						/*if(tubo.sprite.x - pointer.x > 5){
+							tubo.sprite.body.moveLeft(20);
+						}
 
-					if(pointer.x - tubo.sprite.x > 5){
-						tubo.sprite.body.moveRight(20);
-					}
+						if(pointer.x - tubo.sprite.x > 5){
+							tubo.sprite.body.moveRight(20);
+						}
 
-					if(pointer.y - tubo.sprite.y > 5){
-						tubo.sprite.body.moveDown(20);
-					}
+						if(pointer.y - tubo.sprite.y > 5){
+							tubo.sprite.body.moveDown(20);
+						}
 
-					if(tubo.sprite.y - pointer.y > 5){
-						tubo.sprite.body.moveUp(20);
-					}*/
+						if(tubo.sprite.y - pointer.y > 5){
+							tubo.sprite.body.moveUp(20);
+						}*/
 
-					tubo.sprite.body.x = pointer.x;
-					tubo.sprite.body.y = pointer.y;
+						tubo.sprite.body.x = pointer.x;
+						tubo.sprite.body.y = pointer.y;
 
 
-					velocityx = Math.abs(tubo.sprite.x - pointer.x)/2;
-					velocityy = Math.abs(tubo.sprite.y - pointer.y)/2;
-				}
+						velocityx = Math.abs(tubo.sprite.x - pointer.x)/2;
+						velocityy = Math.abs(tubo.sprite.y - pointer.y)/2;
+					}	
+				})
+				
 
-				 var tmpSprite = tubo.sprite;
+				 
 			});
 
 
@@ -123,16 +148,19 @@ mainGame.update= function update() {
 		});
 
 		Object.keys(tubosEnMundo).forEach(function(key){
-				var tubo = tubosEnMundo[key];
-				tubo.activeClicked = false;
+				var tubos = tubosEnMundo[key];
+				tubos.forEach(function(tubo){
+					tubo.activeClicked = false;
+				});
+				
 
 			});
 	}
 
 	var pastKey = null;
 	Object.keys(tubosEnMundo).forEach(function(key){
-		var tubo = tubosEnMundo[key];
-		var tmpSprite = tubo.sprite;
+		var tubos = tubosEnMundo[key];
+		
 
 		function collide(elementa,elementb){
 			if(elementb.name && elementa.name)
@@ -146,14 +174,24 @@ mainGame.update= function update() {
 							createTubo(response.element[0].compuestoKey, 
 								xCom, yCom, 'a5a47e');
 
+							console.log('AHHAAHAHAHAHAAHAHAH',elementb, elementa)
+
 							if(!response.element[0].locked){
-								Requester.Unlock(response.element[0].compuestoKey, function(){
+								Requester.Unlock(response.element[0].compuestoKey,
+									averageRGB(elementa.eColor, elementb.eColor), 
+									function(){
 									notification(response.element[0].compuestoKey);
 								});
 							}
 
-							delete tubosEnMundo[elementb.name];
-							delete tubosEnMundo[elementa.name];
+							_.find(tubosEnMundo[elementb.name], function(el){
+								return el.sprite.idForDelete == elementb.idForDelete
+							});
+
+							_.find(tubosEnMundo[elementa.name], function(el){
+								return el.sprite.idForDelete == elementa.idForDelete
+							});
+							
 							elementa.textName.kill();
 							elementb.textName.kill();
 							elementb.kill();
@@ -180,21 +218,47 @@ mainGame.update= function update() {
 			}
 		}
 
-		//if(pastKey &&  tubosEnMundo[pastKey]){
-			Object.keys(tubosEnMundo).forEach(function(subKey){
-				if(key != subKey){
-					var pastSprite = tubosEnMundo[subKey].sprite;
-					game.physics.ninja.collide(tubo.sprite, pastSprite, collide, null, this);
-				}
-			})
-			
-		/*} else {
-			pastKey = key;
-		}*/
+		tubos.forEach(function(tubo){
+			var tmpSprite = tubo.sprite;
+			//if(pastKey &&  tubosEnMundo[pastKey]){
+				Object.keys(tubosEnMundo).forEach(function(subKey){
+					//if(key != subKey){
+						var pastTubos = tubosEnMundo[subKey];
+						pastTubos.forEach(function(pastTubo){
+							var pastSprite = pastTubo.sprite;
+							if(pastSprite.idForDelete != tubo.sprite.idForDelete)
+								game.physics.ninja.collide(tubo.sprite, pastSprite, collide, null, this);
+						});
+						
+					//}
+				})
+				
+			/*} else {
+				pastKey = key;
+			}*/
 
-		//tmpSprite.textName.x = tmpSprite.x;
-		///tmpSprite.textName.y = tmpSprite.y;
-		game.physics.ninja.collide(tubo.sprite, table, collide, null, this);
+			//tmpSprite.textName.x = tmpSprite.x;
+			///tmpSprite.textName.y = tmpSprite.y;
+			game.physics.ninja.collide(tubo.sprite, table, function(){}, null, this);
+			game.physics.ninja.collide(tubo.sprite, dump, function(elementa,elementb){
+				if(elementa.name){
+					_.find(tubosEnMundo[elementa.name], function(el){
+						return el.sprite.idForDelete == elementa.idForDelete
+					});
+					elementa.textName.kill();					
+					elementa.kill();
+				}
+
+				if(elementb.name){
+					_.find(tubosEnMundo[elementb.name], function(el){
+						return el.sprite.idForDelete == elementb.idForDelete
+					});
+					elementb.textName.kill();
+					elementb.kill();
+				}
+			}, null, this);
+		});
+		
 		
 
 	})

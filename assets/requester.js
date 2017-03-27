@@ -17,7 +17,7 @@ var Requester = {
     TryCombination : function(elementA, elementB, callback){
         httpGetAsync('/elements/try/'+elementA+'/'+elementB, callback);
     },
-    Unlock : function(element, callback){
-      httpGetAsync('/elements/unlock/'+element, callback);  
+    Unlock : function(element,color, callback){
+      httpGetAsync('/elements/unlock/'+element+'/'+color, callback);  
     }
 }
