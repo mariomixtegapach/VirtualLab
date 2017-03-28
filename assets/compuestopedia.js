@@ -1,22 +1,5 @@
-//var compuestoService = require('../services/compuestoService.js');
-var unlockedCompuestos = [
-	{
-		compuestoKey: 'Na',
-		name: 'Sodio',
-		components: [],
-		description: 'El sodio es un elemento químico de símbolo Na (del latín, natrium) con número atómico 11, fue aislado por sir Humphry Davy en 1807. Es un metal alcalino blando, untuoso, de color plateado, muy abundante en la naturaleza, encontrándose en la sal marina y el mineral halita. Es muy reactivo, arde con llama amarilla, se oxida en presencia de oxígeno y reacciona violentamente con el agua.',
-		image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Na%2B.svg/245px-Na%2B.svg.png',
-		locked: true
-	},
-	{
-		compuestoKey: 'NaCl',
-		name: 'Clorudo de sodio',
-		components: ['Na', 'Cl', 'Na', 'Cl', 'Na', 'Cl', 'Na', 'Cl', 'Na', 'Cl'],
-		description: 'El cloruro de sodio es una de las sales responsable de la salinidad del océano y del fluido extracelular de muchos organismos. También es el mayor componente de la sal comestible, comúnmente usada como condimento y conservante de comida.',
-		image: 'http://callisto.ggsrv.com/imgsrv/FastFetch/UBER2/00060202',
-		locked: true
-	}
-];
+var compuestoService = require('../assets/requester.js');
+var unlockedCompuestos;
 var desktopBackground;
 var bookSprite;
 var openBookSound;
@@ -38,6 +21,7 @@ var compuestopedia = {
 		game.load.spritesheet('book', R.book, 372, 299);
 		game.load.audio('openBook', R.openBook);
 		game.load.audio('switchPage', R.switchPage);
+		unlockedCompuestos = compuestoService.GetUnlockedElements();
 		for(var i = 0; i < unlockedCompuestos.length; i++){
 			game.load.image(unlockedCompuestos[i].compuestoKey, unlockedCompuestos[i].image);
 		}
