@@ -2,7 +2,7 @@
     "compuestoKey": "",
     "name":"",
     "color":"",
-    "components": [],
+    "components": [""],
     "description": "",
     "image": "",
     "locked": false

@@ -60,6 +60,9 @@ var CompuestosService = function(config){
             
             return defer.promise;
         },
+        UpdateCompuestoInfoBySymbol : function(symbol, newComp){
+            return dao.update({ compuestoKey : symbol}, newComp);
+        },
         GetUnlockedCompuestos :function(){
             var defer = q.defer();
             dao.get({
@@ -84,6 +87,11 @@ var CompuestosService = function(config){
         },
         GetAllElements : function(){
             return dao.get({});
+        },
+        GetElementNotComplete : function(){
+            return dao.get({
+                name:''
+            })
         }
     };
 };

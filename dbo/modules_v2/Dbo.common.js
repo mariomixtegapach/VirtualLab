@@ -89,8 +89,10 @@ common.finder = function(db,collection,where,pageOption){
 
 common.globalCollection = function(url,force){
     var defer = q.defer();
+    console.log('USING',process.env.OPENSHIFT_MONGODB_DB_URL || url || gConfig.url)
    // if(globaldb === null) {
-        MongoClient.connect(process.env.OPENSHIFT_MONGODB_DB_URL || url || gConfig.url, function (err, db) {
+    var prodUrl = process.env.OPENSHIFT_MONGODB_DB_URL ? process.env.OPENSHIFT_MONGODB_DB_URL + 'virtualab':'';
+        MongoClient.connect(prodUrl || url || gConfig.url, function (err, db) {
             if (err) {
                 defer.reject(err);
             } else {

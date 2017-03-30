@@ -10,13 +10,44 @@ var compuestoServices = new CompuestosServices();
 
 
 router.get('/', function(req, res, next) {
-  res.render('secret',{})
+	compuestoServices.GetElementNotComplete().then(function(ell){
+  			var el = ell[new Date().getTime() % ell.length];
+  res.render('secret',{ newEl : el})
+  		}, function(err){
+  			console.log(err);
+  			res.status(500).json({});
+  		});
+  
 });
 
 router.post('/save', function(req, res, next) {
-  console.log(req.body)
-  ImageService.SaveImage('public/imgs/comps/'+req.body.name,req.body.image);
-  res.json({});
+  	var compuesto = req.body;
+  ImageService.SaveImage('public/imgs/comps/'+req.body.name,req.body.image).then(function(a){
+  		compuesto.image = '/imgs/comps/'+a.imgName;
+  		
+
+  		compuestoServices.UpdateCompuestoInfoBySymbol(compuesto.compuestoKey, compuesto)
+  			.then(function(done){
+		  		compuestoServices.GetElementNotComplete().then(function(ell){
+		  			var el = ell[new Date().getTime() % ell.length];
+		  			res.json({ newEl : el});	
+		  		}, function(err){
+		  			console.log(err);
+		  			res.status(500).json({});
+		  		});
+  			}, function(err){
+  				console.log(err);
+		  		res.status(500).json({});
+  			})
+
+
+  		
+  }, function(err){
+	console.log(err);
+	res.status(500).json({});
+});
+
+  
 });
 
 
