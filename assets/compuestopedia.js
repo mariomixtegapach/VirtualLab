@@ -6,6 +6,8 @@ var openBookSound;
 var switchPage;
 var lastIndex = 0;
 var index;
+var backMenuButton;
+var backMenuButtonText;
 var compuestoName;
 var compuestoKey;
 var compuestoComponents;
@@ -19,6 +21,7 @@ var compuestopedia = {
 		game.load.image('desktopBackground', R.desktopBackground);
 		game.load.image('transparentButton', R.transparentButton);
 		game.load.spritesheet('book', R.book, 372, 299);
+		game.load.image('button', R.button);
 		game.load.audio('openBook', R.openBook);
 		game.load.audio('switchPage', R.switchPage);
 		unlockedCompuestos = compuestoService.GetUnlockedElements();
@@ -38,6 +41,14 @@ var compuestopedia = {
 		bookSprite.frame = 0;
 		bookSprite.anchor.setTo(0.5);
 		bookSprite.scale.setTo(2);
+		backMenuButton = game.add.button(game.width/4, game.height/4, 'button', this.backMenu, this);
+		backMenuButtonText = game.add.text(game.width/4, game.height/4 , ' volver', {
+			font: 'bold 15px sans-serif',
+			fill: 'black',
+			align: 'left',
+			wordWrap: true,
+			wordWrapWidth: 250,
+		});
 		fowardButton = game.add.button(game.width - game.width/2 + 50, game.height/4 -30, 'transparentButton', this.nextPage, this);
 		fowardButton.width = 299;
 		fowardButton.height = 372;
@@ -157,6 +168,9 @@ var compuestopedia = {
 		}
 
 	},
+	backMenu: function(){
+		game.state.start('menu');
+	}
 	getCompuesto: function(){
 		compuestoName.text = unlockedCompuestos[index].name;
 		compuestoKey.text = '(' + unlockedCompuestos[index].compuestoKey + ')';

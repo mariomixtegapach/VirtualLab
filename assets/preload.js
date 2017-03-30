@@ -14,4 +14,6 @@ mainGame.preload = function preload() {
 	 game.load.image('hint', R.hint);
 	 game.load.image('dump', R.dump);
 	 game.load.spritesheet('balls', R.ball, 17, 17);
+	 game.load.image('button', R.button);
+
 }

@@ -1,9 +1,21 @@
 var pre_elements = [];
 var hintTxt = {};
-  
+var backMenuButton;
+var backMenuButtonText;
 
 
 mainGame.create  = function create() {
+
+backMenuButton = game.add.button(game.width/4, game.height/4, 'button', function(){
+    game.state.start('menu');
+}, this);
+backMenuButtonText = game.add.text(game.width/4, game.height/4 , ' volver', {
+      font: 'bold 15px sans-serif',
+      fill: 'black',
+      align: 'left',
+      wordWrap: true,
+      wordWrapWidth: 250,
+});
 
 textGroup = game.add.group();
 itemsGroup = game.add.group();
